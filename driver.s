@@ -1,3 +1,5 @@
+	.global 	_start
+
 	.data
 dbLength:		.quad 0
 szLength:		.skip 21
@@ -8,8 +10,6 @@ szWoohoo:		.asciz "woohoo!!!"
 szUhOh:			.asciz "uh oh :("
 
 chLF:			.byte 0xa
-
-	.global 	_start
 
 	.text
 

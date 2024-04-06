@@ -1,11 +1,30 @@
-OBJS = driver.o String_equals.o String_length.o ../obj/putstring.o ../obj/int64asc.o
+# Define directories
+OBJ_DIR = ./obj
+EXTERNAL_FUNCTIONS_DIR = ./external-functions
 
+# List source files
+SRCS = $(wildcard *.s)
 
-%.o: %.s
+# List object files
+EXTERNAL_OBJS = $(wildcard $(EXTERNAL_FUNCTIONS_DIR)/*.o)
+
+# Generate object files from source files
+OBJS = $(patsubst %.s,$(OBJ_DIR)/%.o,$(SRCS))
+
+# Pattern rule to assemble source files into object files
+$(OBJ_DIR)/%.o: %.s
 	as -g $< -o $@
 
-rasm-3: $(OBJS)
-	ld -o driver $(OBJS)
+# Compile driver.s from src
+#$(OBJ_DIR)/driver.o: $(DRIVER_SRC)
+#	as -g $< -o $@
 
+# Rule to link object files into the driver executable
+driver: $(OBJS) $(EXTERNAL_OBJS)
+	ld -o driver $(OBJS) $(EXTERNAL_OBJS)
+
+# Rule to clean up object files and executable
 clean:
-	rm -f *.o run *~
+	rm -f $(OBJ_DIR)/*.o driver
+
+.PHONY: clean
