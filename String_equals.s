@@ -1,10 +1,15 @@
-/***********************************
- * Name:   Noëlle Abat
- * Class:  CS3B - Professor Barnett
- * Lab:    RASM-3
- * Date:   3/30/24
- **********************************/
-
+/*
+ * Subroutine String_equals: Provided two pointers to null-terminated
+ *	strings, String_equals will return 1 (true) to x0 if they are an
+ *	exact match (case-sensitive), or 0 if they are not
+ * x0: Must point to a null-terminated string
+ * x1: Must point to a null-terminated string
+ * LR: Must contain the return address
+ *
+ * Returned register contents:
+ *	x0: int byte result
+ * All registers are preserved except x0
+ */
 	.global String_equals
 
 	.text
