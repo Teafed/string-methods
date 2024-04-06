@@ -24,4 +24,4 @@ This repository provides implementation for the following funtions:
       +String_toLowerCase(string1:String):String
       +String_toUpperCase(string1:String):String
 
-`obj/` contains predefined object files for driver use. thanks dr b :)
+`external-functions/` contains predefined object files for driver use. thanks dr b :)
