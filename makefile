@@ -15,13 +15,9 @@ OBJS = $(patsubst %.s,$(OBJ_DIR)/%.o,$(SRCS))
 $(OBJ_DIR)/%.o: %.s
 	as -g $< -o $@
 
-# Compile driver.s from src
-#$(OBJ_DIR)/driver.o: $(DRIVER_SRC)
-#	as -g $< -o $@
-
 # Rule to link object files into the driver executable
 driver: $(OBJS) $(EXTERNAL_OBJS)
-	ld -o driver $(OBJS) $(EXTERNAL_OBJS)
+	ld -o driver /usr/lib/aarch64-linux-gnu/libc.so -dynamic-linker /lib/ld-linux-aarch64.so.1 $(OBJS) $(EXTERNAL_OBJS)
 
 # Rule to clean up object files and executable
 clean:

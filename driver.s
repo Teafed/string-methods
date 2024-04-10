@@ -5,8 +5,8 @@
 
 	.data
 dbCounter:		.quad 0
-dbLength:		.quad 0
-szLength:		.skip BUFFER
+dbTemp:			.quad 0
+szTemp:			.skip BUFFER
 szCounter:		.skip BUFFER
 szCountPrint:	.asciz ".\n"
 szTrue:			.asciz "TRUE\n"
@@ -55,7 +55,7 @@ szString22b:	.asciz "   String_concat(s1, s2) = "
 	.text
 
 _start:
-
+//	b		test //temp
 // 1. String_length //
 
 	bl		output_counter			//branch to output_counter
@@ -67,15 +67,15 @@ _start:
 	bl		putstring				//print
 	ldr		x0, =s1					//load s1 into x0
 	bl		String_length			//get length of string
-	ldr		x1, =dbLength			//load address of dbLength into x1
+	ldr		x1, =dbTemp				//load address of dbTemp into x1
 	str		x0, [x1]				//store x0 into dbLength
 
 	//put dbLength into szLength
-	ldr		x1, =szLength			//load address of szLength into x2
+	ldr		x1, =szTemp				//load address of szTemp into x1
 	bl		int64asc				//convert to ascii for printing
 
 	//output length
-	ldr		x0, =szLength			//load szLength into x0
+	ldr		x0, =szTemp				//load szTemp into x0
 	bl		putstring				//print
 	ldr		x0, =chLF				//load chLF into x0
 	bl		putch					//print
@@ -87,15 +87,15 @@ _start:
 	bl		putstring				//print
 	ldr		x0, =s2					//load s2 into x0
 	bl		String_length			//get length of string
-	ldr		x1, =dbLength			//load address of dbLength into x1
+	ldr		x1, =dbTemp				//load address of dbTemp into x1
 	str		x0, [x1]				//store x0 into dbLength
 
 	//put dbLength into szLength
-	ldr		x1, =szLength			//load address of szLength into x2
+	ldr		x1, =szTemp				//load address of szTemp into x1
 	bl		int64asc				//convert to ascii for printing
 
 	//output length
-	ldr		x0, =szLength			//load szLength into x0
+	ldr		x0, =szTemp				//load szTemp into x0
 	bl		putstring				//print
 	ldr		x0, =chLF				//load chLF into x0
 	bl		putch					//print new line
@@ -108,15 +108,15 @@ _start:
 	bl		putstring				//print
 	ldr		x0, =s3					//load s3 into x0
 	bl		String_length			//get length of string
-	ldr		x1, =dbLength			//load address of dbLength into x1
+	ldr		x1, =dbTemp				//load address of dbTemp into x1
 	str		x0, [x1]				//store x0 into dbLength
 
 	//put dbLength into szLength
-	ldr		x1, =szLength			//load address of szLength into x2
+	ldr		x1, =szTemp				//load address of szTemp into x1
 	bl		int64asc				//convert to ascii for printing
 
 	//output length
-	ldr		x0, =szLength			//load szLength into x0
+	ldr		x0, =szTemp				//load szTemp into x0
 	bl		putstring				//print
 	ldr		x0, =chLF				//load chLF into x0
 	bl		putch					//print
@@ -170,7 +170,6 @@ _start:
 	bl		String_equalsIgnoreCase	//get length of string
 	bl		true_false				//output true or false
 
-
 // 6. String_copy(s1) //
 
 	bl		output_counter			//branch to output_counter
@@ -181,16 +180,12 @@ _start:
 	bl		putch					//print new line
 	ldr		x0, =szString6b			//load szString6b address into x0
 	bl		putstring				//print
-
-	//copy string - will be put into x1 (x0 will still hold the original string)
-	ldr		x0, =s1					//load s1 address into x0
-//	bl		String_copy				//branch to String_copy
-	mov		x0, x1					//move copy from x1 to x0
-	ldr		x1, =s4					//load address of s4 into x1
-	str		x0, [x1]				//store copy into s4
-
 	ldr		x0, =s1
 	bl		putstring				//print original string
+
+	ldr		x0, =s1					//load s1 address into x0
+	ldr		x1, =s4					//load s4 address into x1
+	bl		String_copy				//branch to String_copy
 
 	ldr		x0, =chLF				//load chLF into x0
 	bl		putch					//print new line
@@ -198,6 +193,8 @@ _start:
 	bl		putstring				//print
 	ldr		x0, =s4					//load s4 into x0
 	bl		putstring				//print original string
+	ldr		x0, =chLF				//load chLF into x0
+	bl		putch					//print new line
 
 // 7. String_substring_1(s3,4,14) //
 
@@ -205,9 +202,17 @@ _start:
 
 	ldr		x0, =szString7			//load szString7 address into x0
 	bl		putstring				//print
+	ldr		x0, =chLF				//load chLF into x0
+	bl		putch					//print new line
 
-	//finish this
-
+	ldr		x0, =s3					//load s3 address into x0
+	mov		x2, #4					//load value 4 into x1
+	mov		x3, #14					//load value 14 into x2
+	bl		String_substring_1		//branch to String_substring_1
+	mov		x0, x1					//move x1 into x0
+	bl		putstring				//print
+	mov		x0, x1
+	bl		free					//free memory
 
 // 8. String_substring_2(s3,7) //
 
