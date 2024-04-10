@@ -19,7 +19,7 @@
 	.text
 
 String_substring_2:
-	str		x30, [sp, #-16]!			//push x30 onto stack
+	stp		x1, x30, [sp, #-16]!		//push x1 and x30 onto stack
 
 	mov		x1, x0						//move address to x1
 	bl		String_length				//get full string length
@@ -61,7 +61,7 @@ exit_loop:
 
 	strb	wzr, [x1]					//store null terminator
 
-	ldr		x30, [sp], #16				//pop x30 from stack
+	ldp		x1, x30, [sp], #16			//pop x1 and x30 from stack
 	mov		x1, x9						//restore substring starting address
 	mov		x0, x10						//restore original string starting address
 
