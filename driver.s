@@ -11,7 +11,10 @@ szCounter:		.skip BUFFER
 szCountPrint:	.asciz ".\n"
 szTrue:			.asciz "TRUE\n"
 szFalse:		.asciz "FALSE\n"
+szStarts1:		.asciz "hat."
+szStarts2:		.asciz "Cat"
 szEgg:			.asciz "egg"
+szEggs:			.asciz "eggs"
 chFind:			.byte 0x61 //'a'
 chReplace:		.byte 0x6f //'o'
 chG:			.byte 0x67 //'g'
@@ -202,8 +205,6 @@ _start:
 
 	ldr		x0, =szString7			//load szString7 address into x0
 	bl		putstring				//print
-	ldr		x0, =chLF				//load chLF into x0
-	bl		putch					//print new line
 
 	ldr		x0, =s3					//load s3 address into x0
 	mov		x2, #4					//load value 4 into x1
@@ -211,8 +212,10 @@ _start:
 	bl		String_substring_1		//branch to String_substring_1
 	mov		x0, x1					//move x1 into x0
 	bl		putstring				//print
-	mov		x0, x1
+	mov		x0, x1					//move x1 to x0
 	bl		free					//free memory
+	ldr		x0, =chLF				//load chLF into x0
+	bl		putch					//print new line
 
 // 8. String_substring_2(s3,7) //
 
@@ -221,7 +224,15 @@ _start:
 	ldr		x0, =szString8			//load szString8 address into x0
 	bl		putstring				//print
 
-	//finish this
+	ldr		x0, =s3					//load s3 address into x0
+	mov		x2, #7					//load value 4 into x1
+	bl		String_substring_2		//branch to String_substring_1
+	mov		x0, x1					//move x1 into x0
+	bl		putstring				//print
+	mov		x0, x1
+	bl		free					//free memory
+	ldr		x0, =chLF				//load chLF into x0
+	bl		putch					//print new line
 
 
 // 9. String_charAt(s2,4) //
@@ -241,7 +252,11 @@ _start:
 	ldr		x0, =szString10			//load szString10 address into x0
 	bl		putstring				//print
 
-	//finish this
+	ldr		x0, =s1					//load s1 address into x0
+	mov		x1, #11					//put 11 in x1
+	ldr		x2, =szStarts1			//load szStarts1 address into x2
+	bl		String_startsWith_1		//branch to String_startsWith_1
+	bl		true_false				//branch to true_false
 
 
 // 11. String_startsWith_2(s1,"Cat") //
@@ -251,7 +266,10 @@ _start:
 	ldr		x0, =szString11			//load szString11 address into x0
 	bl		putstring				//print
 
-	//finish this
+	ldr		x0, =s1					//load s1 address into x0
+	ldr		x1, =szStarts2			//load szStarts2 address into x1
+	bl		String_startsWith_2		//branch to String_startsWith_2
+	bl		true_false				//branch to true_false
 
 
 // 12. String_endsWith(s1,"in the hat.") //
