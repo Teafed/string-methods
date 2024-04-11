@@ -8,6 +8,8 @@ dbCounter:		.quad 0
 dbTemp:			.quad 0
 szTemp:			.skip BUFFER
 szCounter:		.skip BUFFER
+szIndex:			.skip 16
+szNU:				.asciz "\n"
 szCountPrint:	.asciz ".\n"
 szTrue:			.asciz "TRUE\n"
 szFalse:		.asciz "FALSE\n"
@@ -284,40 +286,83 @@ _start:
 
 // 13. String_indexOf_1(s2,'g') //
 
-	bl		output_counter			//branch to output_counter
+	bl			output_counter				//branch to output_counter
 
 	ldr		x0, =szString13			//load szString13 address into x0
-	bl		putstring				//print
+	bl			putstring					//print
 
-	//finish this
+	ldr		x0,=s2						// Load x0 with address of sz2
+	mov		x1,#'g'						// Move char value into x1
+	bl			String_indexOf_1			// Branch and link to find index
 
+
+	// Print index
+	str		LR,[SP,#-16]!
+	ldr		x1,=szIndex
+	bl			int64asc
+	ldr		x0,=szIndex
+	bl			putstring
+	ldr		x0,=szNU
+	bl			putstring
+	ldr		LR,[SP],#16
 
 // 14. String_indexOf_2(s2,'g',9) //
 
-	bl		output_counter			//branch to output_counter
+	bl			output_counter			//branch to output_counter
 
-	ldr		x0, =szString14			//load szString14 address into x0
-	bl		putstring				//print
+	ldr		x0, =szString14		//load szString14 address into x0
+	bl			putstring				//print
 
-	//finish this
+	ldr		x0,=s2
+	mov		x1,#'g'
+	mov		x2,#9
+	bl			String_indexOf_2
+
+	// Print index
+	str		LR,[SP,#-16]!
+	ldr		x1,=szIndex
+	bl			int64asc
+	ldr		x0,=szIndex
+	bl			putstring
+	ldr		x0,=szNU
+	bl			putstring
+	ldr		LR,[SP],#16
 
 
 // 15. String_indexOf_3(s2,"eggs") //
 
-	bl		output_counter			//branch to output_counter
+	bl			output_counter			//branch to output_counter
 
-	ldr		x0, =szString15			//load szString15 address into x0
-	bl		putstring				//print
+	ldr		x0, =szString15		//load szString15 address into x0
+	bl			putstring				//print
+
+
+	ldr		x0,=s2
+	ldr		x1,=szEgg
+	bl			String_indexOf_3
+
+	// Print index
+	str		LR,[SP,#-16]!
+	ldr		x1,=szIndex
+	bl			int64asc
+	ldr		x0,=szIndex
+	bl			putstring
+	ldr		x0,=szNU
+	bl			putstring
+	ldr		LR,[SP],#16
 
 	//finish this
 
 
 // 16. String_lastIndexOf_1(s2,'g') //
 
-	bl		output_counter			//branch to output_counter
+	bl			output_counter				//branch to output_counter
 
 	ldr		x0, =szString16			//load szString16 address into x0
-	bl		putstring				//print
+	bl			putstring					//print
+
+
+
 
 	//finish this
 
@@ -343,23 +388,41 @@ _start:
 
 
 // 19. String_replace(s1,'a','o') //
+	bl			output_counter			//branch to output_counter
 
-	bl		output_counter			//branch to output_counter
+	ldr		x0, =szString19		//load szString19 address into x0
+	bl			putstring				//print
 
-	ldr		x0, =szString19			//load szString19 address into x0
-	bl		putstring				//print
+	ldr		x0,=s1					// Load string into x0
+	mov		x1,#'a'					// Load x1 numeric a char
+	mov		x2,#'o'					// Load x2 with numeric char
+	// Now we call replace string function
+	bl			String_replace			// Branch and link to function
 
-	//finish this
+
+	str		x0,[SP,#-16]!			// Str function address
+	bl			putstring				// Output address
+
+	ldr		x0,[SP],#16				// Increment stack by 16
+	bl			free						// Free malloc with free
 
 
 // 20. String_toLowerCase(s1) //
 
-	bl		output_counter			//branch to output_counter
+	bl			output_counter			//branch to output_counter
 
-	ldr		x0, =szString20			//load szString20 address into x0
-	bl		putstring				//print
+	ldr		x0, =szString20		//load szString20 address into x0
+	bl			putstring				//print
 
-	//finish this
+
+	ldr		x0,=s1					// Load x0 with address of string1
+	bl			String_toLowerCase
+
+	str		x0,[SP,#-16]!			// Store string address of x0
+	bl			putstring
+
+	ldr		x0,[SP],#16
+	bl			free
 
 
 // 21. String_toUpperCase(s1) //
@@ -369,7 +432,14 @@ _start:
 	ldr		x0, =szString21			//load szString21 address into x0
 	bl		putstring				//print
 
-	//finish this
+	ldr		x0,=s1					// Load x0 with address of string1
+	bl			String_toUpperCase
+
+	str		x0,[SP,#-16]!			// Store string address of x0
+	bl			putstring
+
+	ldr		x0,[SP],#16
+	bl			free
 
 
 // 22. String_concat(s1," ") //
