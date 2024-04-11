@@ -230,7 +230,7 @@ _start:
 	bl		String_substring_2		//branch to String_substring_1
 	mov		x0, x1					//move x1 into x0
 	bl		putstring				//print
-	mov		x0, x1
+	mov		x0, x1					//move x1 to x0
 	bl		free					//free memory
 	ldr		x0, =chLF				//load chLF into x0
 	bl		putch					//print new line
@@ -300,10 +300,10 @@ _start:
 
 	ldr		x0,=s2					// Load x0 with address of sz2
 //	mov		x1,#'g'					// Move char value into x1
-	ldr		x1, =chG
-	ldrb	w1, [x1]
+	ldr		x1, =chG				//load chG into x1
+	ldrb	w1, [x1]				//load value into x1
 	bl		String_indexOf_1		// Branch and link to find index
-	bl		print_index
+	bl		print_index				//print index
 
 // 14. String_indexOf_2(s2,'g',9) //
 
@@ -312,13 +312,13 @@ _start:
 	ldr		x0, =szString14			//load szString14 address into x0
 	bl		putstring				//print
 
-	ldr		x0,=s2
+	ldr		x0,=s2					//load s2 address into x0
 //	mov		x1,#'g'
-	ldr		x1, =chG
-	ldrb	w1, [x1]
-	mov		x2,#9
-	bl		String_indexOf_2
-	bl		print_index
+	ldr		x1, =chG				//load chG into x1
+	ldrb	w1, [x1]				//load value into x1
+	mov		x2,#9					//put 9 in x2
+	bl		String_indexOf_2		//branch to String_indexOf_2
+	bl		print_index				//print index
 
 // 15. String_indexOf_3(s2,"eggs") //
 
@@ -327,10 +327,10 @@ _start:
 	ldr		x0, =szString15			//load szString15 address into x0
 	bl		putstring				//print
 
-	ldr		x0,=s2
-	ldr		x1,=szEgg
-	bl		String_indexOf_3
-	bl		print_index
+	ldr		x0,=s2					//load s2 address into x0
+	ldr		x1,=szEgg				//load szEgg address into x1
+	bl		String_indexOf_3		//branch to String_indexOf_3
+	bl		print_index				//print index
 
 // 16. String_lastIndexOf_1(s2,'g') //
 
@@ -444,24 +444,24 @@ _start:
 	ldr		x0, =szString22a	//load szString22a address into x0
 	bl		putstring			//print
 
-	ldr		x0, =s1
-	ldr		x1, =szSpace
-	ldr		x2, =szTemp
-	bl		String_concat
+	ldr		x0, =s1					//load x0 with s1
+	ldr		x1, =szSpace			//load x1 with szSpace
+	ldr		x2, =szTemp				//load x2 with szTemp
+	bl		String_concat			//branch to String_concat
 
 	//String_concat(s1, s2)
 
 	ldr		x0, =szString22b		//load szString22b address into x0
 	bl		putstring				//print
 
-	ldr		x0, =szTemp
-	ldr		x1, =s2
-	ldr		x2, =szCounter
-	bl		String_concat
-	mov		x0, x2
-	bl		putstring
+	ldr		x0, =szTemp				//load x0 with szTemp
+	ldr		x1, =s2					//load x1 with s2
+	ldr		x2, =szCounter			//load x2 with szCounter
+	bl		String_concat			//branch to String_concar
+	mov		x0, x2					//move string to x0
+	bl		putstring				//print
 
-	b		exit_sequence
+	b		exit_sequence			//all done!
 
 
 output_counter:
