@@ -62,9 +62,9 @@ exit:
 
 	ldp		x0, x30, [sp], #16
 
-//	str		x30, [sp, #-16]!
-//	bl		free
-//	ldr		x30, [sp], #16
+	str		x30, [sp, #-16]!
+	bl		free
+	ldr		x30, [sp], #16
 
 	ldp		x1, x2, [sp], #16		//pup x1 and x2 from stack
 	ldp		x30, x3, [sp], #16		//pop x30 and x0 from stack
