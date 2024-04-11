@@ -339,6 +339,11 @@ _start:
 	ldr		x0, =szString16			//load szString16 address into x0
 	bl		putstring				//print
 
+	ldr		x0, =s2					//load address of s2 into x0
+	ldr		x1, =chG				//load chG address into x1
+	ldrb	w1, [x1]				//load char
+	bl		String_lastIndexOf_1	//branch to lastIndexOf_1
+	bl		print_index				//print index
 
 // 17. String_lastIndexOf_2(s2,'g',6) //
 
@@ -347,7 +352,12 @@ _start:
 	ldr		x0, =szString17			//load szString17 address into x0
 	bl		putstring				//print
 
-	//finish this
+	ldr		x0, =s2					//load address of s2 into x0
+	ldr		x1, =chG				//load chG address into x1
+	ldrb	w1, [x1]				//load char
+	mov		x2, #6					//move value 6 into x2
+	bl		String_lastIndexOf_2	//branch to lastIndexOf_2
+	bl		print_index				//print index
 
 
 // 18. String_lastIndexOf_3(s2,"eggs") //
@@ -357,8 +367,10 @@ _start:
 	ldr		x0, =szString18			//load szString18 address into x0
 	bl		putstring				//print
 
-	//finish this
-
+	ldr		x0, =s2					//load address of s2 into x0
+	ldr		x1, =szEgg				//load szEgg address into x1
+	bl		String_lastIndexOf_3	//branch to lastIndexOf_3
+	bl		print_index				//print index
 
 // 19. String_replace(s1,'a','o') //
 	bl		output_counter		//branch to output_counter
@@ -380,6 +392,8 @@ _start:
 	bl		putstring			// Output address
 //	ldr		x0,[SP],#16			// Increment stack by 16
 //	bl		free				// Free malloc with free
+	ldr		x0, =chLF				//load address of chLF into x0
+	bl		putch					//print new line
 
 
 
@@ -399,6 +413,9 @@ _start:
 	ldr		x0,[SP],#16			// Push address
 	bl		free				// Freee memory
 
+	ldr		x0, =chLF				//load address of chLF into x0
+	bl		putch					//print new line
+
 
 // 21. String_toUpperCase(s1) //
 
@@ -415,6 +432,9 @@ _start:
 
 	ldr		x0,[SP],#16			// Push address
 	bl		free				// free emem
+
+	ldr		x0, =chLF				//load address of chLF into x0
+	bl		putch					//print new line
 
 // 22. String_concat(s1," ") //
 
