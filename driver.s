@@ -406,12 +406,13 @@ _start:
 
 	ldr		x0,=s1				// Load x0 with address of string1
 	bl		String_toLowerCase
-
-	str		x0,[SP,#-16]!		// Store string address of x0
 	bl		putstring			// Call function putstring
 
-	ldr		x0,[SP],#16			// Push address
-	bl		free				// Freee memory
+//	str		x0,[SP,#-16]!		// Store string address of x0
+//	bl		putstring			// Call function putstring
+
+//	ldr		x0,[SP],#16			// Push address
+//	bl		free				// Freee memory
 
 	ldr		x0, =chLF				//load address of chLF into x0
 	bl		putch					//print new line
@@ -426,12 +427,12 @@ _start:
 
 	ldr		x0,=s1				// Load x0 with address of string1
 	bl		String_toUpperCase
+	bl		putstring
+//	str		x0,[SP,#-16]!		// Store string address of x0
+//	bl		putstring			// Call function putstring
 
-	str		x0,[SP,#-16]!		// Store string address of x0
-	bl		putstring			// Call function putstring
-
-	ldr		x0,[SP],#16			// Push address
-	bl		free				// free emem
+//	ldr		x0,[SP],#16			// Push address
+//	bl		free				// free emem
 
 	ldr		x0, =chLF				//load address of chLF into x0
 	bl		putch					//print new line
@@ -450,8 +451,6 @@ _start:
 
 	//String_concat(s1, s2)
 
-	ldr		x0, =chLF				//load address of chLF into x0
-	bl		putch						//print new line
 	ldr		x0, =szString22b		//load szString22b address into x0
 	bl		putstring				//print
 
@@ -459,7 +458,7 @@ _start:
 	ldr		x1, =s2
 	ldr		x2, =szCounter
 	bl		String_concat
-	mov		x2, x0
+	mov		x0, x2
 	bl		putstring
 
 	b		exit_sequence
