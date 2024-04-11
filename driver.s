@@ -17,6 +17,7 @@ szStarts1:		.asciz "hat."
 szStarts2:		.asciz "Cat"
 szEgg:			.asciz "egg"
 szEggs:			.asciz "eggs"
+szSpace:			.asciz "  "
 chFind:			.byte 0x61 //'a'
 chReplace:		.byte 0x6f //'o'
 chG:			.byte 0x67 //'g'
@@ -411,7 +412,6 @@ _start:
 	ldr		x0, =szString20		//load szString20 address into x0
 	bl			putstring				//print
 
-
 	ldr		x0,=s1					// Load x0 with address of string1
 	bl			String_toLowerCase
 
@@ -426,7 +426,7 @@ _start:
 
 	bl		output_counter			//branch to output_counter
 
-	ldr		x0, =szString21			//load szString21 address into x0
+	ldr		x0, =szString21	//load szString21 address into x0
 	bl		putstring				//print
 
 	ldr		x0,=s1					// Load x0 with address of string1
@@ -438,20 +438,61 @@ _start:
 	ldr		x0,[SP],#16				// Push address
 	bl			free						// free emem
 
-
 // 22. String_concat(s1," ") //
 
-	bl		output_counter			//branch to output_counter
+	bl			output_counter			//branch to output_counter
 
 	ldr		x0, =szString22a		//load szString22a address into x0
-	bl		putstring				//print
+	bl			putstring				//print
+
+	// Call for s1 and a space
+
+	ldr		x0,=s1
+	ldr		x1,=szSpace
+	bl			String_concat
+	str		x0,[SP,#-16]!
+	ldr		x0,[SP],#16
+	bl			free
+
+
 
 	//String_concat(s1, s2)
 
 	ldr		x0, =chLF				//load address of chLF into x0
-	bl		putch					//print new line
+	bl			putch						//print new line
 	ldr		x0, =szString22b		//load szString22b address into x0
-	bl		putstring				//print
+	bl			putstring				//print
+
+
+	ldr		x0,=s1
+	ldr		x1,=s2
+	bl			String_concat
+	str		x0,[SP,#-16]!
+
+	bl			putstring
+	ldr		x0,[SP],#16
+	bl			free
+
+
+	// Call upper
+
+//	ldr		x0,=s1					// Load x0 with address of string1
+//	bl			String_toUpperCase
+
+//	str		x0,[SP,#-16]!			// Store string address of x0
+//	bl			putstring				// Call function putstring
+
+//	ldr		x0,[SP],#16				// Push address
+//	bl			free						// free emem
+
+
+//	str		x0,[SP, #-16]!			// Store address to SP
+//	bl			putstring
+//	ldr		x0,[SP],#16
+//	bl			free
+
+
+
 
 	//finish this
 
