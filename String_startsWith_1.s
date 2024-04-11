@@ -34,49 +34,5 @@ String_startsWith_1:
 	ldr		x30, [sp], #16			//push x30 onto stack
 
 	ret		LR						//return to sender
-/*
-	//preserve x1, x2, x3, x4 registers
-	stp		x1, x2, [sp, #-16]!		//push x1 and x2 onto stack
-	stp		x3, x4, [sp, #-16]!		//push x3 and x4 onto stack
-	mov		x3, x0					//x3 = string 1 pointer
-	mov		x4, x2					//x4 = string 2 pointer
-	mov		x0, x2					//copy string 2 pointer to x0
-	bl		String_length			//get string length
-	mov		x5, x0					//x5 = string 2 length
-	mov		x6, #0					//initialize counter to 0
 
-	mov		w0, #1					//initialize to true
-
-loop:
-
-	ldrb	w1, [x3], #1			//load byte from pointer into w1
-	ldrb	w2, [x4], #1			//load byte from pointer into w2
-
-	cmp		x5, x6					//compare x5 and x6
-	beq		exit_loop				//exit loop if x5 == x6
-	cmp		w1, w2					//check if chars are equal
-	bne		not_equal				//if not, branch to not_equal
-
-	add		x6, x6, #1				//increment counter
-	cbz		w1, exit_loop			//if byte in w1 is null, branch to exit_loop
-	b		loop					//otherwise loop again
-
-not_equal:
-	mov		w0, #0					//change to false
-	b		exit_loop				//exit loop
-
-exit_loop:
-
-	mov		x0, x1					//move x1 into x0
-	bl		free
-
-	ldp		x3, x4, [sp], #16		//pop x3 and x4
-	ldp		x1, x2, [sp], #16		//pop x1 and x2
-	ldr		x30, [sp], #16			//push x30 onto stack
-
-	ret 	LR						//return to caller
-
-	.end
 .end
-
-*/
