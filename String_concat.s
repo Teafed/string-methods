@@ -18,7 +18,7 @@ String_concat:
 	add		x0, x5, x3				//add s1 and s2 lengths
 	stp		x1, x2, [sp, #-16]!		//push x30 and x0 onto stack
 	stp		x3, x4, [sp, #-16]!		//push x30 and x0 onto stack
-	bl		malloc					//add that many bytes of memory to heap
+	bl		calloc					//add that many bytes of memory to heap
 	ldp		x3, x4, [sp], #16		//push x30 and x0 onto stack
 	ldp		x1, x2, [sp], #16		//push x30 and x0 onto stack
 	mov		x6, x0					//heap ptr in x6
@@ -49,14 +49,22 @@ exit_loop:
 	strb	w2, [x6], #1			//store null terminator to end of string
 
 	ldr		x2, [sp], #16			//bring back pointer to holder string
+	stp		x0, x30, [sp, #-16]!	//x30 onto stack
 
 copy_string:
-	ldrb	w3, [x1], #1			//load byte from source address into w3, increment
-	cbz		w3, exit				//if null, end copying
-	strb	w3, [x2], #1			//store byte to destination address, increment
-	b		copy_string				//otherwise, continue copying
+
+	ldrb	w3, [x0], #1
+	strb	w3, [x2], #1
+	cbz		w3, exit
+	b		copy_string
 
 exit:
+
+	ldp		x0, x30, [sp], #16
+
+//	str		x30, [sp, #-16]!
+//	bl		free
+//	ldr		x30, [sp], #16
 
 	ldp		x1, x2, [sp], #16		//pup x1 and x2 from stack
 	ldp		x30, x3, [sp], #16		//pop x30 and x0 from stack
