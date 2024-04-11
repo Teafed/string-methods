@@ -297,14 +297,14 @@ _start:
 
 
 	// Print index
-	str		LR,[SP,#-16]!
-	ldr		x1,=szIndex
-	bl			int64asc
-	ldr		x0,=szIndex
-	bl			putstring
-	ldr		x0,=szNU
-	bl			putstring
-	ldr		LR,[SP],#16
+	str		LR,[SP,#-16]!				// Push return address
+	ldr		x1,=szIndex					//	Load x1 with address of szIndex
+	bl			int64asc						//	Convert to asc
+	ldr		x0,=szIndex					// Load address of szIndex
+	bl			putstring					// Print string
+	ldr		x0,=szNU						// Load x0 with address szNu
+	bl			putstring					// Print a new line
+	ldr		LR,[SP],#16					// Pop return address
 
 // 14. String_indexOf_2(s2,'g',9) //
 
@@ -319,39 +319,36 @@ _start:
 	bl			String_indexOf_2
 
 	// Print index
-	str		LR,[SP,#-16]!
-	ldr		x1,=szIndex
-	bl			int64asc
-	ldr		x0,=szIndex
-	bl			putstring
-	ldr		x0,=szNU
-	bl			putstring
-	ldr		LR,[SP],#16
+	str		LR,[SP,#-16]!				// Push return address
+	ldr		x1,=szIndex					//	Load x1 with address of szIndex
+	bl			int64asc						//	Convert to asc
+	ldr		x0,=szIndex					// Load address of szIndex
+	bl			putstring					// Print string
+	ldr		x0,=szNU						// Load x0 with address szNu
+	bl			putstring					// Print a new line
+	ldr		LR,[SP],#16					// Pop return address
 
 
 // 15. String_indexOf_3(s2,"eggs") //
 
-	bl			output_counter			//branch to output_counter
+	bl			output_counter				//branch to output_counter
 
-	ldr		x0, =szString15		//load szString15 address into x0
-	bl			putstring				//print
+	ldr		x0, =szString15			//load szString15 address into x0
+	bl			putstring					//print
 
 
-	ldr		x0,=s2
-	ldr		x1,=szEgg
-	bl			String_indexOf_3
-
+	ldr		x0,=s2						// Load x0 with address s2
+	ldr		x1,=szEgg					// Load search key
+	bl			String_indexOf_3			// Call String_indexOf_3
 	// Print index
-	str		LR,[SP,#-16]!
-	ldr		x1,=szIndex
-	bl			int64asc
-	ldr		x0,=szIndex
-	bl			putstring
-	ldr		x0,=szNU
-	bl			putstring
-	ldr		LR,[SP],#16
-
-	//finish this
+	str		LR,[SP,#-16]!				// Push return address
+	ldr		x1,=szIndex					//	Load x1 with address of szIndex
+	bl			int64asc						//	Convert to asc
+	ldr		x0,=szIndex					// Load address of szIndex
+	bl			putstring					// Print string
+	ldr		x0,=szNU						// Load x0 with address szNu
+	bl			putstring					// Print a new line
+	ldr		LR,[SP],#16					// Pop return address
 
 
 // 16. String_lastIndexOf_1(s2,'g') //
@@ -419,10 +416,10 @@ _start:
 	bl			String_toLowerCase
 
 	str		x0,[SP,#-16]!			// Store string address of x0
-	bl			putstring
+	bl			putstring				// Call function putstring
 
-	ldr		x0,[SP],#16
-	bl			free
+	ldr		x0,[SP],#16				// Push address
+	bl			free						// Freee memory
 
 
 // 21. String_toUpperCase(s1) //
@@ -436,10 +433,10 @@ _start:
 	bl			String_toUpperCase
 
 	str		x0,[SP,#-16]!			// Store string address of x0
-	bl			putstring
+	bl			putstring				// Call function putstring
 
-	ldr		x0,[SP],#16
-	bl			free
+	ldr		x0,[SP],#16				// Push address
+	bl			free						// free emem
 
 
 // 22. String_concat(s1," ") //
