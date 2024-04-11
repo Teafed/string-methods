@@ -12,10 +12,22 @@
 
 	.text
 String_replace:
-	STP		LR,x0,[SP,#-16]!	// Push return address and modify string
+	STP		LR,x0,[SP,#-16]!		// Push return address and modify string
 	STP		x1,x2,[SP,#-16]!  // Push x1 and x2 (x1 - Old char)
 										// 					(x2 - New Char)
+loop:
 
+	ldrb	w4, [x0]
+	cbz		w4, exit
+	cmp		w4, w1
+	bne		continue
+	strb	w2, [x0]
+
+continue:
+
+	add		x0, x0, #1
+	b		loop
+/*
 
 	// Use string length to find length to use as lcv
 
@@ -47,7 +59,11 @@ replace:
 										// pointer by 1
 	b			loop					// Unconditional branch to loop
 
+*/
 
 exit:
-	ldp		LR,x0,[SP],#16		// pop link regi and x0 to stack(Return address and return string address)
+	LDP		x1,x2,[SP],16		  // Push x1 and x2 (x1 - Old char)
+	LDP		LR,x0,[SP],#16			// pop link regi and x0 to stack(Return address and return string address)
 	RET								// Return to driver
+
+
