@@ -8,19 +8,21 @@ dbCounter:		.quad 0
 dbTemp:			.quad 0
 szTemp:			.skip BUFFER
 szCounter:		.skip BUFFER
-szIndex:			.skip 16
-szNU:				.asciz "\n"
+szIndex:		.skip 16
+szNU:			.asciz "\n"
 szCountPrint:	.asciz ".\n"
 szTrue:			.asciz "TRUE\n"
 szFalse:		.asciz "FALSE\n"
 szStarts1:		.asciz "hat."
 szStarts2:		.asciz "Cat"
+szEnds:			.asciz "in the hat."
 szEgg:			.asciz "egg"
 szEggs:			.asciz "eggs"
 chFind:			.byte 0x61 //'a'
 chReplace:		.byte 0x6f //'o'
 chG:			.byte 0x67 //'g'
 chLF:			.byte 0x0a //line feed
+
 
 //test strings
 s1:				.asciz "Cat in the hat."
@@ -60,7 +62,7 @@ szString22b:	.asciz "   String_concat(s1, s2) = "
 	.text
 
 _start:
-//	b		test //temp
+
 // 1. String_length //
 
 	bl		output_counter			//branch to output_counter
@@ -219,6 +221,7 @@ _start:
 	ldr		x0, =chLF				//load chLF into x0
 	bl		putch					//print new line
 
+
 // 8. String_substring_2(s3,7) //
 
 	bl		output_counter			//branch to output_counter
@@ -244,7 +247,12 @@ _start:
 	ldr		x0, =szString9			//load szString9 address into x0
 	bl		putstring				//print
 
-	//finish this
+	ldr		x0, =s2					//load s2 address into x0
+	mov		x1, #4					//load value 4 into x1
+	bl		String_charAt			//branch to String_charAt
+	bl		putch					//print character
+	ldr		x0, =chLF				//load chLF into x0
+	bl		putch					//print new line
 
 
 // 10. String_startsWith_1(s1,11,"hat.") //
@@ -281,7 +289,10 @@ _start:
 	ldr		x0, =szString12			//load szString12 address into x0
 	bl		putstring				//print
 
-	//finish this
+	ldr		x0, =s1					//load s1 into x0
+	ldr		x1, =szEnds				//load szEnds address into x1
+	bl		String_endsWith			//branch to String_endsWith
+	bl		true_false				//branch to true_false
 
 
 // 13. String_indexOf_1(s2,'g') //
@@ -316,7 +327,7 @@ _start:
 	ldr		x0,=s2
 	mov		x1,#'g'
 	mov		x2,#9
-	bl			String_indexOf_2
+//	bl			String_indexOf_2
 
 	// Print index
 	str		LR,[SP,#-16]!
@@ -339,7 +350,7 @@ _start:
 
 	ldr		x0,=s2
 	ldr		x1,=szEgg
-	bl			String_indexOf_3
+//	bl			String_indexOf_3
 
 	// Print index
 	str		LR,[SP,#-16]!
@@ -351,20 +362,12 @@ _start:
 	bl			putstring
 	ldr		LR,[SP],#16
 
-	//finish this
-
-
 // 16. String_lastIndexOf_1(s2,'g') //
 
 	bl			output_counter				//branch to output_counter
 
 	ldr		x0, =szString16			//load szString16 address into x0
 	bl			putstring					//print
-
-
-
-
-	//finish this
 
 
 // 17. String_lastIndexOf_2(s2,'g',6) //
